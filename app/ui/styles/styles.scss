@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  // https://stackoverflow.com/questions/71296535/how-to-remove-arrow-on-input-type-number-with-tailwind-css
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
+}
+
+.shimmer {
+  @apply before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent;
+}
+
+table {
+  thead {
+    tr {
+      th {
+        @apply font-medium;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        @apply text-sm;
+      }
+    }
+  }
+}
+
+#apexchart {
+  @apply text-slate-200;
+}
+
+.apexcharts-canvas > svg {
+  background-color: transparent !important;
+  @apply text-slate-800;
+
+  text {
+    @apply text-slate-200;
+  }
+}
