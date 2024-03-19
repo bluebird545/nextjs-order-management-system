@@ -9,8 +9,12 @@ Developement:
 `npm run dev`
 
 
-## Run the ETL
-Extracts data from CSV files, transforms it, and loads it to PostgreSQL database
+## Running the ETL
+Reads and extracts data from CSV files, transforms it, and loads it to PostgreSQL database using environment variables in `.env`
 run ETL:
 
+Using MAKEFILE:
 `make run-etl`
+
+Running script from package.json:
+`npm run etl`
