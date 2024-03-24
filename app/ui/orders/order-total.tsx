@@ -6,7 +6,7 @@ type Props = {
     price: number
     quantity: number
   }[]
-  onTotalChange: Function
+  onTotalChange?: Function
 }
 
 export default function OrderTotal({ orderItems, onTotalChange }: Props) {
@@ -17,11 +17,11 @@ export default function OrderTotal({ orderItems, onTotalChange }: Props) {
     let subtotal = 0
 
     if (orderItems.length > 0) {
-      orderItems.map((item) => subtotal =+ (item.price * item.quantity))
+      orderItems.map((item) => subtotal += (item.price * item.quantity))
 
       setOrderSubtotal(subtotal)
       setOrderTotal(subtotal)
-      onTotalChange(subtotal)
+      if (onTotalChange) onTotalChange(subtotal)
     }
   },
   [orderItems, onTotalChange])
