@@ -5,18 +5,16 @@ async function loadCustomers(customers) {
 
   try {
     const result = await Promise.all(
-      
-      customers.map((customer) => {
-        const insertCustomer = {
+      customers.map(
+        (customer) => db.query({
           text: `
             INSERT INTO customers(id, first_name, last_name, email, phone, address_street_one, address_street_two, address_city, address_state, address_zipcode)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             ON CONFLICT (id) DO NOTHING;
           `,
           values: Object.values(customer)
-        }
-        db.query(insertCustomer)
-      })
+        })
+      )
     )
 
     db.query(`SELECT setval('customers_id_seq', (SELECT MAX(id) from "customers"))`)
@@ -33,17 +31,16 @@ async function loadProducts(products) {
 
   try {
     const result = await Promise.all(
-      products.map((product) => {
-        const insertProduct = {
+      products.map(
+        (product) => db.query({
           text: `
             INSERT INTO products(id, name, price, description, category, image)
             VALUES ($1, $2, $3, $4, $5, $6)
             ON CONFLICT (id) DO NOTHING;
           `,
           values: Object.values(product)
-        }
-        db.query(insertProduct)
-      })
+        })
+      )
     )
 
     db.query(`SELECT setval('products_id_seq', (SELECT MAX(id) from "products"))`)
@@ -60,17 +57,16 @@ async function loadOrders(orders) {
 
   try {
     const result = await Promise.all(
-      orders.map((order) => {
-        const insertOrder = {
+      orders.map(
+        (order) => db.query({
           text: `
             INSERT INTO orders(id, customer_id, total, date, status)
             VALUES ($1, $2, $3, $4, $5)
             ON CONFLICT (id) DO NOTHING;
           `,
           values: Object.values(order)
-        }
-        db.query(insertOrder)
-      })
+        })
+      )
     )
 
     db.query(`SELECT setval('orders_id_seq', (SELECT MAX(id) from "orders"))`)
@@ -86,18 +82,16 @@ async function loadOrderDetails(orderDetails) {
   console.log(`Seeding order details into database...`)
   try {
     const result = await Promise.all(
-      orderDetails.map((order, index) => {
-        const insertOrderDetail = {
+      orderDetails.map(
+        (order) => db.query({
           text: `
             INSERT INTO order_details(id, order_id, product_id, quantity)
             VALUES($1, $2, $3, $4)
             ON CONFLICT (id) DO NOTHING;
           `,
           values: Object.values(order)
-        }
-
-        db.query(insertOrderDetail)
-      })
+        })
+      )
     )
 
     db.query(`SELECT setval('order_details_id_seq', (SELECT MAX(id) from "order_details"))`)
@@ -114,21 +108,19 @@ async function loadRevenue(revenue) {
 
   try {
     const result = await Promise.all(
-      revenue.map((rev) => {
-        const query = {
+      revenue.map(
+        (data) => db.query({
           text: `
-            INSERT INTO revenue (month, year, revenue)
-            VALUES ($1, $2, $3);
+            INSERT INTO revenue(month, year, revenue)
+            VALUES($1, $2, $3);
           `,
-          values: Object.values(rev)
-        }
-
-        db.query(query)
-      })
+          values: Object.values(data)
+        })
+      )
     )
 
     // db.query(`SELECT setval('revenue_id_seq', (SELECT MAX(id) from "revenue"))`)
-
+    
     console.log(`Seeded ${result.length} revenue`)
   } catch (error) {
     console.error('Error seeding revenue:', error);
@@ -138,7 +130,7 @@ async function loadRevenue(revenue) {
 
 async function load({ customers, products, orders, orderDetails, revenue }) {
   try {
-    await Promise.all([
+   await Promise.all([
       loadCustomers(customers),
       loadProducts(products),
       loadOrders(orders),

@@ -20,9 +20,13 @@ function transformOrderDetail(orderDetails) {
   return orderDetails
 }
 
-function transformRevenue(revenue) {
+function transformRevenue({ month, year, revenue }) {
   // transform month to 4 chars; January -> Jan
-  return revenue
+  return {
+    month: month,
+    year: Number(year),
+    revenue: Number(revenue)
+  }
 }
 
 module.exports = { transformCustomer, transformProduct, transformOrder, transformOrderDetail, transformRevenue }
